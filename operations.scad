@@ -24,10 +24,14 @@ module fourwaymirror() {
 	mirror([1, 0, 0]) mirror([0, 1, 0]) children();
 }
 
+module mirrorXZ() {
+    children();
+    mirror([0, 1, 0]) children();
+}
+
 module mirrorYZ() {
 	children();
 	mirror([1, 0, 0]) children();
 }
 
-// TODO mirrorXZ
 // TODO fourwaymirror = mirrorXZ mirrorYZ
