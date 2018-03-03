@@ -9,8 +9,8 @@
 /*
  * Alias for linear_extrude, without the need to name the height parameter.
  */
-module linextr(h) {
-	linear_extrude(height=h) children();
+module linextr(h, center=false) {
+	linear_extrude(height=h, center=center) children();
 }
 
 /*
