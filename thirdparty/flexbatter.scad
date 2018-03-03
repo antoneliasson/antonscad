@@ -122,6 +122,7 @@ module flexbatter(
   L = m*l+lcorr;// corrected overall lenth
   lc = L/m;     // corrected cell length
 
+   translate([0,-(d/2+w-ws/2)*(n-1),0])
    for(i=[0:n-1])translate([0,i*(d+2*w-ws),0]){ // generate n battery cases
       difference(){
          
