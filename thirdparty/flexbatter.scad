@@ -74,17 +74,18 @@ module arc(r1,r2,h,a1=0,a2=0){
 // Heinz Spiess, 2014-09-06 (CC BY-SA)
 /////////////////////////////////////////////////////////////////////////////////
 module sline(angle,radius,i,w,h){
+   r = abs(radius[i]);
+   a = angle[i];
    scale([angle[i]>=0?1:-1,1,1])
-      assign(r=abs(radius[i]))assign(a=angle[i])
-         translate([a?r:0,0,0]){
-	    translate([-w/2,-r-0.01,0])cube([w,0.02,h]); // tiny overlap!
-            if(a)arc(r-w/2,r+w/2,0,a,h=h);
-	    else if(r>0)translate([-w/2,-r,0])cube([w,r,h]);
-      if(i+1<len(angle))
-           rotate(angle[i])
-	      translate([a?-r:0,a?0:-r,0])
-	         sline(angle,radius,i+1,w,h);
-  }
+      translate([a?r:0,0,0]){
+         translate([-w/2,-r-0.01,0])cube([w,0.02,h]); // tiny overlap!
+         if(a)arc(r-w/2,r+w/2,0,a,h=h);
+         else if(r>0)translate([-w/2,-r,0])cube([w,r,h]);
+         if(i+1<len(angle))
+            rotate(angle[i])
+               translate([a?-r:0,a?0:-r,0])
+                  sline(angle,radius,i+1,w,h);
+      }
 }
 
 ew=0.56;   // extrusion width
@@ -132,8 +133,8 @@ module flexbatter(
                translate([0,-w-d/2,0])
 	          chamfered_cube([L+w,d+2*w+(i<n-1?ws:0),hf*d+wz+ch],ch);
 	       // main cavity
-               assign(jmin=deepen>0?0:-1)
 	       for(j=[0:m-1])translate([j*lc,0,0])hull(){
+                  jmin = deepen > 0 ? 0 : -1;
                   translate([-0.01,-d/2+(j>jmin?oh:0),wz])cube([lc/4,d-(j>jmin?2*oh:0),d+1]);
                   translate([lc*0.75,-d/2+(j<m-1?oh:0),wz])cube([lc/4+0.01,d-(j<m-1?2*oh:0),d+1]);
                }
@@ -144,7 +145,8 @@ module flexbatter(
             }
       
             // plastic spring for minus pole
-            for(sy=[-1,1])scale([1,sy,1])assign(D=d+2*w-2*ws-0.7){
+            for(sy=[-1,1])scale([1,sy,1]){
+               D = d + 2*w - 2*ws - 0.7;
                translate([ch,d/2+w-ws/2,0])rotate(-90)
 		  //sline([90,0,120,90,120,90,0],[d/8+2,d/6,d/8-1,d/8,-d/8,d/8,d/2],0,ws,hf*d+w);
 		  sline([0,180,0,180,0,-180,0,90,0],[r+ch+el,D/4,el,D/12,el/2,D/12,1+el/2,D/5,D/3],0,ws,hf*d+wz);
@@ -165,15 +167,16 @@ module flexbatter(
    
          // grip deepening
 	 if(deepen!=0)
-	    for (j=[(deepen>0?0:m-1):m-1])
-	    assign(adeepen=deepen>0?deepen:-deepen)
-            translate([j*lc+lc/2-0.5,-d/2-w-0.01,wz+d+df*l])
-	       rotate([-90,0,0]){
-	          cylinder(r=df*l+adeepen*d,h=d+2*w+2*ws+2,$fn=72);
-	          if(i==0)cylinder(r1=df*l+adeepen*d+ch,r2=df*l+adeepen*d,h=ch+0.02,$fn=72);
-	          if(i==n-1)translate([0,0,d+2*w-ch])cylinder(r2=df*l+adeepen*d+ch,r1=df*l+adeepen*d,h=ch+0.02,$fn=72);
+	    for (j=[(deepen>0?0:m-1):m-1]) {
+               adeepen=deepen>0?deepen:-deepen;
+               translate([j*lc+lc/2-0.5,-d/2-w-0.01,wz+d+df*l])
+                  rotate([-90,0,0]){
+                     cylinder(r=df*l+adeepen*d,h=d+2*w+2*ws+2,$fn=72);
+                     if(i==0)cylinder(r1=df*l+adeepen*d+ch,r2=df*l+adeepen*d,h=ch+0.02,$fn=72);
+                     if(i==n-1)translate([0,0,d+2*w-ch])cylinder(r2=df*l+adeepen*d+ch,r1=df*l+adeepen*d,h=ch+0.02,$fn=72);
 
-               }
+                  }
+            }
          // conical screw holes in corners
          for(x=[7+shd,L-2*shd])for(y=[-d/2+shd,d/2-shd])
              translate([x,y,-1]){
@@ -194,22 +197,21 @@ module flexbatter(
 	    translate([w+l/2,d/4+1,wz])cube([l/5,d/4.5,4*eh],true);
 	    translate([w+l/2+l/10,d/4+1,wz])cube([d/7,d/10,4*eh],true);
 	    // engrave plus symbol
-	    assign(sy=(l>12*shd)?1:-1){ // for short batteries +- on the side
-	       translate([w+l/2+l/(sy>0?5:10),sy*(d/4+1),wz]){
-	          cube([1,d/4,4*eh],true);
-	          cube([d/4,1,4*eh],true);
+            sy=(l>12*shd)?1:-1; // for short batteries +- on the side
+            translate([w+l/2+l/(sy>0?5:10),sy*(d/4+1),wz]){
+               cube([1,d/4,4*eh],true);
+               cube([d/4,1,4*eh],true);
+            }
+            // engrave minus symbol
+            translate([w+l/2-l/(sy>0?5:10),sy*(d/4+1),wz])
+               cube([1,d/4,4*eh],true);
+            if(sy>0){
+               translate([w+l/2, -(d/4+1), wz]) {
+                  linear_extrude(height=4*eh, center=true)
+                     text(text, font="DejaVu Sans:style=Bold", d/4, halign="center", valign="center");
                }
-	    // engrave minus symbol
-	       translate([w+l/2-l/(sy>0?5:10),sy*(d/4+1),wz])
-	          cube([1,d/4,4*eh],true);
-               if(sy>0){
-                  translate([w+l/2, -(d/4+1), wz]) {
-                     linear_extrude(height=4*eh, center=true)
-                        text(text, font="DejaVu Sans:style=Bold", d/4, halign="center", valign="center");
-                  }
-               } else if(text) {
-                  echo("Battery holder too short for text engraving");
-               }
+            } else if(text) {
+               echo("Battery holder too short for text engraving");
             }
 	 }
    
