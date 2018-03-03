@@ -109,6 +109,7 @@ module flexbatter(
   deepen=0,        // relative deepening for side grip of batteries 
   df=1,            // relative deepening radius
   lcorr=0,         // length correction for multicell compartments
+  text,            // optional text to engrave in the battery holder floor
   $fn=24
   ){
 
@@ -200,6 +201,14 @@ module flexbatter(
 	    // engrave minus symbol
 	       translate([w+l/2-l/(sy>0?5:10),sy*(d/4+1),wz])
 	          cube([1,d/4,4*eh],true);
+               if(sy>0){
+                  translate([w+l/2, -(d/4+1), wz]) {
+                     linear_extrude(height=4*eh, center=true)
+                        text(text, font="DejaVu Sans:style=Bold", d/4, halign="center", valign="center");
+                  }
+               } else if(text) {
+                  echo("Battery holder too short for text engraving");
+               }
             }
 	 }
    
@@ -228,36 +237,36 @@ module flexbatter(
 
 }
 
-module flexbatter18650(n=1,m=1,deepen=0,df=1,oh=0){
-   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=65.2,lcorr=0.3,d=18.4,hf=0.75,shd=3,eps=0.28);
+module flexbatter18650(n=1,m=1,deepen=0,df=1,oh=0,text){
+   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=65.2,lcorr=0.3,d=18.4,hf=0.75,shd=3,eps=0.28,text=text);
 }  
 
-module flexbatter18650P(n=1,m=1){
-   flexbatter(n=n,m=m,l=70,lcorr=0,d=18.4,hf=0.75,shd=3,eps=0.28);
+module flexbatter18650P(n=1,m=1,text){
+   flexbatter(n=n,m=m,l=70,lcorr=0,d=18.4,hf=0.75,shd=3,eps=0.28,text=text);
 }  
 
-module flexbatterCR123A(n=1,m=1){
-   flexbatter(n=n,m=m,l=35.1,lcorr=0,d=16.7,hf=0.75,shd=3,xchan=[0.5],eps=0.28);
+module flexbatterCR123A(n=1,m=1,text){
+   flexbatter(n=n,m=m,l=35.1,lcorr=0,d=16.7,hf=0.75,shd=3,xchan=[0.5],eps=0.28,text=text);
 }  
 
-module flexbatterD(n=1,m=1){
-   flexbatter(n=n,m=m,l=61.5,lcorr=0,d=34.0,hf=0.75,shd=3,eps=0.28);
+module flexbatterD(n=1,m=1,text){
+   flexbatter(n=n,m=m,l=61.5,lcorr=0,d=34.0,hf=0.75,shd=3,eps=0.28,text=text);
 }  
 
-module flexbatterC(n=1,m=1,deepen=0,df=1,oh=0){
-   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=49.6,lcorr=2,d=26.4,hf=0.75,shd=3,eps=0.28);
+module flexbatterC(n=1,m=1,deepen=0,df=1,oh=0,text){
+   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=49.6,lcorr=2,d=26.4,hf=0.75,shd=3,eps=0.28,text=text);
 }  
 
-module flexbatterAA(n=1,m=1,deepen=0,df=1,oh=0){
-   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=50.0,lcorr=1.6,d=14.4,hf=0.80,shd=2.5,el=0.5,eps=0.28);
+module flexbatterAA(n=1,m=1,deepen=0,df=1,oh=0,text){
+   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=50.0,lcorr=1.6,d=14.4,hf=0.80,shd=2.5,el=0.5,eps=0.28,text=text);
 }  
 
-module flexbatterAAA(n=1,m=1,deepen=0,df=1,oh=0){
-   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=44.5,lcorr=1.6,d=10.5,hf=0.84,shd=2,el=1,xchan=[0.5],eps=0.2);
+module flexbatterAAA(n=1,m=1,deepen=0,df=1,oh=0,text){
+   flexbatter(n=n,m=m,deepen=deepen,df=df,oh=oh,l=44.5,lcorr=1.6,d=10.5,hf=0.84,shd=2,el=1,xchan=[0.5],eps=0.2,text=text);
 }  
 
-module flexbatter26650(n=1,m=1){
-   flexbatter(n=n,m=m,l=65.7,lcorr=0,d=26.4,hf=0.72,shd=3,eps=0.28);
+module flexbatter26650(n=1,m=1,text){
+   flexbatter(n=n,m=m,l=65.7,lcorr=0,d=26.4,hf=0.72,shd=3,eps=0.28,text=text);
 }  
 
 
@@ -471,10 +480,10 @@ module flexbatter2xCx2(){ // AUTO_MAKE_STL
 //translate([0,33,0])flexbatter18650(n=2);
 //translate([0,90,0])flexbatter18650(n=3);
 //translate([-90,33,0])flexbatter18650(n=4);
-//translate([0,28,0])flexbatterAA(n=1);
-//translate([0,50,0])flexbatterAAA(n=1);
+//translate([0,28,0])flexbatterAA(n=1,text="Ni-MH");
+//translate([0,50,0])flexbatterAAA(n=1,text="Alkaline");
 //flexbatterC(n=1);
-//flexbatterD(n=1);
+//flexbatterD(n=1,text="R20 D");
 //translate([-25,0,0])flexbatter3xAA();
 //translate([0,40,0])flexbatter2xAA();
 //translate([0,80,0])flexbatter2xAAx2();
