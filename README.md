@@ -11,3 +11,10 @@ it into your local OpenSCAD library path like this:
 	$ git clone https://github.com/antoneliasson/antonscad ~/.local/share/OpenSCAD/libraries/se/antoneliasson
 
 assuming that you are on a Linux system.
+
+License
+-------
+
+See [LICENSE](LICENSE) for everything but libraries in the
+[thirdparty](thirdparty) directory. Thirdparty libraries may have differing
+licenses. Refer to each library file's accompanying license file.
