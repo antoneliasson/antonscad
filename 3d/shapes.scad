@@ -5,6 +5,8 @@
  *
  * MIT License
  */
+include <MCAD/units.scad>
+
 use <se/antoneliasson/operations.scad>
 use <se/antoneliasson/2d/shapes.scad>
 
@@ -102,10 +104,14 @@ module with_hooks(n, hl, hh, tol=0) {
  * @param tol tolerance to add to the X and Y dimensions
  */
 module _enclosure_hook(t, w, h, tol=0) {
-	translate([-t-tol/2, -(w+tol)/2, 0]) {
-		cube([t+tol, w+tol, h]);
-		translate([-t/2, 0, h-t]) {
-			cube([t/2, w+tol, t]);
+	translate([-t-t/2-tol/2, 0, 0]) {
+		rotate(90*X) {
+			linextr(w+tol, true) {
+				difference() {
+					square([t+t/2+tol+epsilon, h+epsilon]);
+					trapezoid(t/2, t/2, h-t, 0);
+				}
+			}
 		}
 	}
 }

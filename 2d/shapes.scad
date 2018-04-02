@@ -51,3 +51,7 @@ module rsquare4(s, r) {
 module triangle(x, y) {
 	polygon([[0, 0], [x, 0], [0, y]]);
 }
+
+module trapezoid(a, b, h, skew) {
+	polygon([[0, 0], [a, 0], [skew+b, h], [skew, h]]);
+}
