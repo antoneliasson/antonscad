@@ -12,6 +12,11 @@ it into your local OpenSCAD library path like this:
 
 assuming that you are on a Linux system.
 
+As this library is currently developed without much thought to backwards
+compatibility or stable versioning, you may instead wish to include it in your
+project as a git submodule. That allows versioning the library together with
+your project and update it (or choose not to) in a controlled fashion.
+
 License
 -------
 
