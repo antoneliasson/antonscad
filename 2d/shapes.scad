@@ -1,7 +1,7 @@
 /*
- * A library of (at the moment) 2D shapes.
+ * A library of 2D shapes.
  *
- * Copyright (c) 2017 Anton Eliasson
+ * Copyright (c) 2018 Anton Eliasson
  *
  * MIT License
  */
@@ -33,6 +33,7 @@ module rsquare1(s, r) {
  * Rounded rectangle (all 4 corners)
  */
 module rrect4(x, y, r) {
+	assert(x > 2*r && y > 2*r);
 	offset(r=r) offset(delta=-r) square([x, y], true);
 }
 
