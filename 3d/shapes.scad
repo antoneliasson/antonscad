@@ -109,7 +109,7 @@ module _enclosure_hook(t, w, h, tol=0) {
 			linextr(w+tol, true) {
 				difference() {
 					square([t+t/2+tol+epsilon, h+epsilon]);
-					trapezoid(t/2, t/2, h-t, 0);
+					trapezoid(t/4, 3*t/4, h-t, 0);
 				}
 			}
 		}
