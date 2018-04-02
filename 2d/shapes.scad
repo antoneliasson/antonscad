@@ -52,6 +52,17 @@ module triangle(x, y) {
 	polygon([[0, 0], [x, 0], [0, y]]);
 }
 
-module trapezoid(a, b, h, skew) {
-	polygon([[0, 0], [a, 0], [skew+b, h], [skew, h]]);
+/*
+ * Trapezoid with one base on the X axis and one corner in origin
+ *
+ * See https://en.wikipedia.org/wiki/File:Trapezoid.svg
+ *
+ * @param b: length of near base
+ * @param a: length of opposite base
+ * @param h: height
+ * @param skew: opposite base offset from the Y axis. Zero skew creates a
+ *              right angle trapezoid.
+ */
+module trapezoid(b, a, h, skew) {
+	polygon([[0, 0], [b, 0], [skew+a, h], [skew, h]]);
 }
