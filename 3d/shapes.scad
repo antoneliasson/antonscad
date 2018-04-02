@@ -81,7 +81,7 @@ module _enclosure_corner(w, l, h, r, tol) {
  * @param n number of hooks per side
  * @param hl hook length (Y)
  * @param hh hook heigh (Z)
- * @param tol tolerance to add to the X and Y dimensions. This is the total
+ * @param tol tolerance to add to each dimension. This is the total
  *            tolerance, not the tolerance of each face.
  */
 module with_hooks(n, hl, hh, tol=0) {
@@ -101,7 +101,7 @@ module with_hooks(n, hl, hh, tol=0) {
  * @param t thickness in both X and Z dimensions
  * @param w hook width (Y)
  * @param h hook total height (Z)
- * @param tol tolerance to add to the X and Y dimensions
+ * @param tol tolerance to add to each dimension
  */
 module _enclosure_hook(t, w, h, tol=0) {
 	translate([-t-t/2-tol/2, 0, 0]) {
@@ -109,7 +109,7 @@ module _enclosure_hook(t, w, h, tol=0) {
 			linextr(w+tol, true) {
 				difference() {
 					square([t+t/2+tol+epsilon, h+epsilon]);
-					trapezoid(t/4, 3*t/4, h-t, 0);
+					trapezoid(t/4, 3*t/4, h-t-tol, 0);
 				}
 			}
 		}
